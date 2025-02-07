@@ -46,5 +46,22 @@ systemctl restart chronyd
 chronyc sources -c
 chronyc sources -v
 timedatectl set-ntp true
+timedatectl set-ntp false
+
+####
+
+Topic: systemctl
+
+Define: utility helps you start, restart, stop, disable services that you download or that on the system already.
+
+Commands:
+systemctl status <service>
+systemctl start 
+systemctl stop
+systemctl enable 
+systemctl disable
+systemctl start --now <service>    (this starts and enables at same time)
+
+
 
 
