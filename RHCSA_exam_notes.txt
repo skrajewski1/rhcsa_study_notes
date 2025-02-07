@@ -1,0 +1,50 @@
+Title: RHCSA Exam Notes
+Date: 2-7-2025
+Author: Sean Krajewski
+
+##### Note to Reader #####
+
+I created this txt file so that I would have a place to keep my notes for future studying as I got tired of writing notes by hand.
+This is meant for the RHCSA exam offered by RedHat.
+It is free to use by others if you need something quick to review.
+Scroll through the txt file or use Ctrl-F to search for terms.
+Not meant to be 100% thorough it's just my notes as I go through material for the review.
+
+
+####
+
+Topic: Tuned
+
+Define: a configuration tool used to optimize the system with pre-built profiles. It ajusts CPU, disk, and network settings depending on workload.
+By default tuned will not dynamically adjust system settings
+You can manually modify it witht he tuned-adm command
+
+Commands:
+
+dnf install tuned -y 
+systemctl start --now tuned
+tuned-adm list
+tuned-adm active
+tuned-adm recommend
+tuned-adm profile <profile_name>
+tuned-adm off
+tuned-adm active
+
+####
+
+Topic: Network Time Protocol
+
+Define: links your device to a clock so that time is accurate.
+Very important for financial industry.  
+Possibly security and compliance issues if not set up correctly
+
+Commands:
+
+dnf install chrony
+vim /etc/chrony.conf   (server <ip> iburst)
+systemctl restart chronyd
+chronyc sources -c
+chronyc sources -v
+timedatectl set-ntp true
+
+
