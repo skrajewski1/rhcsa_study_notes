@@ -53,6 +53,7 @@ timedatectl set-ntp false
 Topic: systemctl
 
 Define: utility helps you start, restart, stop, disable services that you download or that on the system already.
+stands for system control
 
 Commands:
 systemctl status <service>
@@ -62,6 +63,29 @@ systemctl enable
 systemctl disable
 systemctl start --now <service>    (this starts and enables at same time)
 
+####
+
+Topic: Users and Groups
+
+Define: it's what it sounds like
+
+Commands:
+
+useradd -g cloud sean
+useradd -aG linux sean
+useradd -s /bin/nologin bob   (bob can't login)
+userdel cathy
+passwd sean
 
 
+####
+
+Topic: File Management
+
+Define: it's what it sounds like
+
+Commands:
+
+chmod g+s <file/directory>  (allows all future files and directories to have the same owner)
+chmod +t <file/dir>     (prevents others from deleting files not owned by them)
 
