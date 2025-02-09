@@ -257,6 +257,58 @@ Decrpition:
 Features: Thin provisioning, monitoring, file system snapshots, tiering, pool-based management, monitoring
 components: blockdev, pool, filesystem
 
+Commands:
+
+dnf install stratisd stratis-cli -y 
+systemctl start --now stratisd
+stratis pool create pool1 /dev/sdc 
+stratis pool list
+stratis filesystem create pool1 fs1
+stratis filesystem list 
+mkdir -p /mnt/fs1
+vim /etc/fstab
+ in the file put the UUID /fs1 xfs  defaults,x-systemd.requires=stratisd.service 0 0
+mount -a
+
+********************************************************************
+******  List the stratis filesystem and unmount them ***************
+********************************************************************
+
+stratis filesystem list pool1
+umount /mnt/fs1
+
+********************************************************************
+********************* Destroy the filesystem ***********************
+********************************************************************
+
+stratis filesystem destroy pool1 fs1
+stratis filesystem destroy pool1 fs1-snap1
+
+# To confirm the removal run:
+stratis filesystem list pool1
+
+********************************************************************
+******************* Destroy the stratis pool  **********************
+********************************************************************
+
+stratis pool destroy pool1
+stratis pool list
+
+********************************************************************
+******* Remove the entries in the /etc/fstab for filesystems *******
+********************************************************************
+vi /etc/fstab
+delete the line 
+/stratis/pool1/fs1  /mnt/fs1  xfs  defaults   0 0
+
+********************************************************************
+***************** Delete the directory /mnt/fs1 ********************
+********************************************************************
+cd /mnt
+rm -r fs1
+cd ~
+# to check
+lsblk
 
 
 #############################################################################################
