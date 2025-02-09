@@ -4,14 +4,14 @@ Author: Sean Krajewski
 
 ##### Note to Reader #####
 
-I created this txt file so that I would have a place to keep my notes for future studying as I got tired of writing notes by hand.
+I created this text file so that I would have a place to keep my notes for future studying as I got tired of writing notes by hand.
 This is meant for the RHCSA exam offered by RedHat.
 It is free to use by others if you need something quick to review.
-Scroll through the txt file or use Ctrl-F to search for terms.
+Scroll through the text file or use Ctrl-F to search for terms.
 Not meant to be 100% thorough it's just my notes as I go through material for the review.
 
 
-####
+#############################################################################################
 
 Topic: Tuned
 
@@ -30,7 +30,7 @@ tuned-adm profile <profile_name>
 tuned-adm off
 tuned-adm active
 
-####
+#############################################################################################
 
 Topic: Network Time Protocol
 
@@ -48,7 +48,7 @@ chronyc sources -v
 timedatectl set-ntp true
 timedatectl set-ntp false
 
-####
+#############################################################################################
 
 Topic: systemctl
 
@@ -63,7 +63,7 @@ systemctl enable
 systemctl disable
 systemctl start --now <service>    (this starts and enables at same time)
 
-####
+#############################################################################################
 
 Topic: Users and Groups
 
@@ -76,16 +76,187 @@ useradd -aG linux sean
 useradd -s /bin/nologin bob   (bob can't login)
 userdel cathy
 passwd sean
+chage -E YYYY-MM-DD username   (passwd expiration date)
+useradd -u 1050 -g developers -G docker,jenkins -e 2025-12-31 devops1
+echo "RedHat123" | passwd --stdin devops1
+chage -d 0 devops1
+echo "DenyUsers devops1" >> /etc/ssh/sshd_config
+systemctl restart sshd
+echo "deploy ALL=(ALL) !ALL" > /etc/sudoers.d/deploy    (replace deploy with the user)
+chmod 440 /etc/sudoers.d/deploy
+sudo -l -U <username>     (checks if user can run sudo)
+chage -M 60 -I 7 <username>    (set pw exp to 60 days and lockout after 7 days)
+
+# Allow <analyst> to restart nginx via sudo (create a sudoers file)
+echo "analyst ALL=(ALL) NOPASSWD: /bin/systemctl restart nginx" > /etc/sudoers.d/analyst
+
+# Set correct permissions for sudoers file
+chmod 440 /etc/sudoers.d/analyst
+
+# Allow engineer1 to restart docker without a password
+echo "engineer1 ALL=(ALL) NOPASSWD: /bin/systemctl restart docker" > /etc/sudoers.d/engineer1
+chmod 440 /etc/sudoers.d/engineer1
+
+# Allow engineer2 to view system logs with journalctl
+echo "engineer2 ALL=(ALL) NOPASSWD: /bin/journalctl -r" > /etc/sudoers.d/engineer2
+chmod 440 /etc/sudoers.d/engineer2
+
+# Ensure contractor has no sudo access
+deluser contractor sudo 2>/dev/null
+
+chage -l <username>
+
+useradd -m devops
+sudo -u devops ssh-keygen -t rsa -b 4096 -N "" -f /home/devops/.ssh/id_rsa
+mkdir -p /home/devops/.ssh
+cat /home/devops/.ssh/id_rsa.pub | sudo tee /home/devops/.ssh/authorized_keys
 
 
-####
+#############################################################################################
 
 Topic: File Management
 
-Define: it's what it sounds like
+Define: basically all of linux is just files even the directories are files just a special type.  
 
 Commands:
 
 chmod g+s <file/directory>  (allows all future files and directories to have the same owner)
 chmod +t <file/dir>     (prevents others from deleting files not owned by them)
+mkdir -p main/{d1,d2,d3}
 
+
+#############################################################################################
+
+Topic: Configuring Repositories
+
+Define: In order to download packages (groups of files/directories, etc) you have to set up a Repositories.  
+You need to create an account on developer RedHat
+For the exam you just need to configure a file though.
+
+Commands:
+
+subscription-manager register --username <name> --password <password>
+
+cd /etc/yum.repos.d/local.repo     (you can name it whatever but it has to be .repo at the end)
+Inside the file you need to write...
+name=baseOS
+baseurl=<ip given to you on test>
+gpgcheck=0
+enabled=1
+
+#############################################################################################
+
+Topic: Processes
+
+Description: A program is a set of instructions. A program in execution is a process.
+You start processes by executing a program (double click, issue command via CLI, etc)
+A process will have a unique PID i.e. process ID 
+process states: start, sleep, stop, zombie
+
+Commands:
+ps 
+ps aux | head
+ps lax | head   (gives UID, parent ID, priority)
+sleep 10 &      (will run sleep in background)
+jobs
+bg % <job#>
+fg % <job#>
+kill <pid>
+killall <command>
+top               (used to monitor processes)
+
+#############################################################################################
+
+Topic: Disk Partitioning & Swap Space Management
+
+Description: Disk partition are sections of storage you can put a file system on for storing files.
+Swap is like temporary storage it's not permanent
+
+Commands:
+
+lsblk
+ls /dev 
+
+fdisk <disc>
+partprobe /dev/<disc>
+mkdir /newdisk
+mkfs.xfs /dev/sdb1
+vim /etc/fstab
+/dev/wgroup/wshare   /mnt/wshare   ext4   defaults   0 0
+
+For swaps do this
+free -m
+lsblk
+fdisk /dev/<partiion>
+   make sure to create  partition with type 82 for swap, p to check, w to write to create it
+mkswap /dev/<partion>
+vim /etc/fstab
+   add the line /dev/<partiion> swap swap defualts 0 0
+swapon -a 
+free -m (to check)
+
+to remove swap
+swapoff /dev/<partion>
+vim /etc/fstab    (remove the swap line)
+systemctl daemon-reload
+fdisk /dev/sdb1   use d then w
+
+
+
+#############################################################################################
+
+Topic: SSH configure
+
+Description: By default RHEL9 doesn't have ssh enabled for root user so you have to configure a setting.
+
+Commands:
+
+To get the ssh access for either Node during RHCSA exam:-
+The default for the sshd_config(5) PermitRootLogin option has changed from "yes" to "prohibit-password".
+vi /etc/ssh/sshd_config 
+PermitRootLogin prohibit-password (please change it to like below)
+PermitRootLogin yes 
+systemctl restart sshd
+
+#############################################################################################
+
+
+Topic: LVM creation
+
+Decription: LVM let's you use multiple partions across different disks.  If one disk has 1TB and you can create a logical volume to use that disk and others.
+In short this unifies all your storage so you can have a large storage pool from which to draw from.
+
+Commands:
+
+fdisk /dev/sdb1
+create a partition with 8e type
+partprobe (if it doesn't show up right away and reboot if it throws an error)
+
+pvcreate /dev/sdb2
+vgcreate wgroup -s 8M /dev/sdb2
+vgs(check)
+lvcreate -l 50 -n wshare wgroup
+lvs
+mkfs.ext4 /dev/wgroup/wshare
+mkdir -p /mnt/wshare
+blkid  (you can use the UUID or the device path)
+vim /etc/fstab
+/dev/wgroup/wshare    /mnt/wshare    ext4  defaults   0 0
+mount -a 
+
+df -h  (to check)
+
+
+
+
+#############################################################################################
+
+Topic: Stratis
+
+Decrpition: 
+Features: Thin provisioning, monitoring, file system snapshots, tiering, pool-based management, monitoring
+components: blockdev, pool, filesystem
+
+
+
+#############################################################################################
