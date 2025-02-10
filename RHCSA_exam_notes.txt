@@ -310,5 +310,91 @@ cd ~
 # to check
 lsblk
 
+#############################################################################################
+
+Topic: SElinux
+
+Description: a mandaory access control system for linux.
+Relies on labels and contexts which are like policies i.e. rules for access
+
+Commands:
+
+SElinux Modes
+getenforce
+setenforce 0   (set's selinux to permissive)
+vim /etc/sysconfig/selinux   (write in there selinux disabled)
+reboot to make changes permanent
+
+SElinux Booleans
+getsebool -a | grep "httpd"
+setsebool -P httpd_enable_homedirs on
+
+SElinux Port 
+semanage port -a -t http_port_t -p tcp 82
+
+
+SElinux contexts
+cat /var/www/html/index.html
+curl localhost/index.html
+semanage fcontext -a -t httpd_sys_context_t "/text(.*)?"
+restorecon -Rv /test
+ls -lZ /test     (should show the context were adjusted)
+vim /etc/httpd/conf/httpd.conf
+     (edit the document root to /test)
+systemctl restart httpd 
+curl localhost/index.html
+
+#############################################################################################
+
+Topic: Virtual Data Optimizer
+
+Descrpition: a storage tool that does not duplicate data and it compresses data.  
+Also VDO uses thin provisioning i.e. it only provisions what's needed
+VDO is good for large scale env like databases, VM, and backups
+A lot of the answers for this question is located in the man page i.e. man vdo
+
+
+Commands:
+
+dnf install vdo kmod-kvdo -y
+
+vdo create --name vdo1 --device /dev/sdb --vdoLogicalSize=50G
+vdo list
+mkfs.xfs -K /dev/mapper/vdo1
+mkdir -p /mnt/vdo1
+vim /etc/fstab
+     /dev/mapper/vdo1 /vdo1 auto defaults,x-systemd.requires=vdo.service 0 0
+mount -a
+
+
+to remove:
+umount /mnt/vdo1
+vdo stop --name=vdo1
+vdo remove --name=vdo1
+wipefs -a /dev/sdc
+
+
+#############################################################################################
+
+Topic: Network configuration
+
+Description: Basically you have to set up a hostname, ip address, netmask, gateway, and dns.  
+use nmcli or nmtui for this.  nmtui is much easier as you don't have to memorize nmcli Commands
+
+Commands:
+
+hostnamectl set-hostname <name>
+hostname    (check if it's right)
+nmtui
+
+
+
+
+#############################################################################################
+
+
+
+
+
 
 #############################################################################################
