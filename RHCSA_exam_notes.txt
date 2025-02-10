@@ -111,6 +111,9 @@ sudo -u devops ssh-keygen -t rsa -b 4096 -N "" -f /home/devops/.ssh/id_rsa
 mkdir -p /home/devops/.ssh
 cat /home/devops/.ssh/id_rsa.pub | sudo tee /home/devops/.ssh/authorized_keys
 
+#adds user to sudoers list so they can use sudo command
+usermod -aG wheel <username>
+
 
 #############################################################################################
 
@@ -243,11 +246,16 @@ blkid  (you can use the UUID or the device path)
 vim /etc/fstab
 /dev/wgroup/wshare    /mnt/wshare    ext4  defaults   0 0
 mount -a 
-
 df -h  (to check)
 
 
-
+To remove
+umount /mnt/v0
+rm -rf /mnt/v0
+lvdisplay /dev/myvgo/v0
+lvremove /dev/myvgo/v0
+vgremove myvgo
+pvremove /dev/sdb1
 
 #############################################################################################
 
@@ -369,10 +377,11 @@ mount -a
 
 to remove:
 umount /mnt/vdo1
+rm -rf /mnt/vdo1
 vdo stop --name=vdo1
 vdo remove --name=vdo1
 wipefs -a /dev/sdc
-
+(remove the line from fstab)
 
 #############################################################################################
 
@@ -392,9 +401,47 @@ nmtui
 
 #############################################################################################
 
+Topic: Podman
+
+Description: Basically this a copy of docker with the biggest difference being Podman is daemonless.
+Daemonless meaning it doesn't have a central running daemon that if compromised would jeopardize 
+all the other containers.
+Podman/Docker are containerization tools that use images to build containers which are good for running apps
+Kubernetes is like podman and docker only that it's suited for enterprise level stuff i.e. thousands to millions of containers/pods
 
 
+Command:
 
+dnf install podman @container-tools
+podman login registry.redhat.io    (put in username and password)
+podman serach httpd
+podman pull docker.io/library/httpd     (you can download any image)
+podman images
+podman rmi  (remove image)
+podman run -d --name web1 <image id>
+podman run -d --name web1 -p 8080:80 <image id>
+podman ps
+podman stop <container name>
+podman rm <container name>
+podman rmi <image name>
+podman run run -it <image> /bin/bash             (takes you inside the container you just created)
+podman run -d --name web4 -p 8081:80 -v /web:/usr/local/apache2/htdocs:Z <image>
+
+(this is for running a service in a container)
+podman generate systemd web5 > /etc/systemd/system/web5-container.service    (This is for a root user)
+systemctl daemon-reload 
+systemctl start --now web5-container
+systemctl status web5-container
+
+(running a service in a container on a user i.e. not the root. login to a user)
+podman ps
+podman run -d --name new -p 8083:80 <image> 
+mkdir -p ~/.config/systemd/user
+podman generate systemd new > ~/.config/systemd/user/new-container.service
+vim ~/.config/systemd/user/new-container.service
+(at the bottom should say WantedBy=default.service)
+systemctl --user daemon-reload
+systemctl --user start --now new-container
 
 
 #############################################################################################
