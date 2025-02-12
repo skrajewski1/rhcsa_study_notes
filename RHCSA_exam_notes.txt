@@ -28,6 +28,7 @@ Topics Covered
 15. Podman
 16. Yum
 17. Bash Scripting
+18. Autofs & NFS
 
 
 Study Resources:
@@ -569,8 +570,10 @@ vim /etc/exports  (/share <client ip>I(ro,synch))
 exportfs -avr
 firewall-cmd --add-service={nfs,mountd,rpc-bind} --permanent
 firewall-cmd --reload
+systemctl enable --now nfs-server
+systemctl enable --now autofs 
 
-client computer
+(client computer)
 dnf install nfs-utils autofs -y
 showmount -e <server ip>
 vim /etc/auto.master
@@ -580,9 +583,8 @@ vim /etc/auto.misc
 
 systemctl enable --now autofs
 
-
-
-
+(if you run into erros on the client computer try the following)
+journalctl -xe | grep autofs
 
 
 #############################################################################################
