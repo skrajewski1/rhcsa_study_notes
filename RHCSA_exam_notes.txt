@@ -5,15 +5,48 @@ Author: Sean Krajewski
 ##### Note to Reader #####
 
 I created this text file so that I would have a place to keep my notes for future studying as I got tired of writing notes by hand.
-This is meant for the RHCSA exam offered by RedHat.
+This is meant for the RHCSA (Exam EX200) offered by RedHat.
 It is free to use by others if you need something quick to review.
 Scroll through the text file or use Ctrl-F to search for terms.
-Not meant to be 100% thorough it's just my notes as I go through material for the review.
+Not meant to be 100% thorough.
+
+Topics Covered
+1. Tuned
+2. Network Time Protocol
+3. Systemctl
+4. Users and Groups
+5. File Management
+6. Configuring Repos
+7. Processes
+8. Partitioning & Swap Space Management
+9. SSH Configuration
+10. LVM creation
+11. Stratis
+12. SElinux 
+13. Virtual Data Optimizer (VDO)
+14. Network configuration
+15. Podman
+16. Yum
+17. Bash Scripting
+
+
+Study Resources:
+
+RHCSA Practice Questions by billybennett  https://github.com/chlebik/rhcsa-practice-questions/blob/master/README.md
+Het Tanis https://www.youtube.com/@het_tanis8213/streams
+Dex Tutor (old) https://www.youtube.com/watch?v=TmrS7FhaaRA&list=PLlr7wO747mNrUoTuXhZ0REJw3hL4oWvLm
+Dex Tutor (new) https://www.youtube.com/watch?v=UQuCZWJW7bY&list=PLlr7wO747mNr3DQnprOi51GtsB39pCV7k
+Learn Linux TV (bash)  https://www.youtube.com/playlist?list=PLT98CRl2KxKGj-VKtApD8-zCqSaN2mD4w
+RHCSA 8th Edition Michael Jan and Alessandro Orsaria
+
+
+
+
 
 
 #############################################################################################
 
-Topic: Tuned
+Topic 1: Tuned
 
 Define: a configuration tool used to optimize the system with pre-built profiles. It ajusts CPU, disk, and network settings depending on workload.
 By default tuned will not dynamically adjust system settings
@@ -32,7 +65,7 @@ tuned-adm active
 
 #############################################################################################
 
-Topic: Network Time Protocol
+Topic 2: Network Time Protocol
 
 Define: links your device to a clock so that time is accurate.
 Very important for financial industry.  
@@ -50,7 +83,7 @@ timedatectl set-ntp false
 
 #############################################################################################
 
-Topic: systemctl
+Topic 3: Systemctl
 
 Define: utility helps you start, restart, stop, disable services that you download or that on the system already.
 stands for system control
@@ -65,7 +98,7 @@ systemctl start --now <service>    (this starts and enables at same time)
 
 #############################################################################################
 
-Topic: Users and Groups
+Topic 4: Users and Groups
 
 Define: it's what it sounds like
 
@@ -117,7 +150,7 @@ usermod -aG wheel <username>
 
 #############################################################################################
 
-Topic: File Management
+Topic 5: File Management
 
 Define: basically all of linux is just files even the directories are files just a special type.  
 
@@ -130,7 +163,7 @@ mkdir -p main/{d1,d2,d3}
 
 #############################################################################################
 
-Topic: Configuring Repositories
+Topic 6: Configuring Repositories
 
 Define: In order to download packages (groups of files/directories, etc) you have to set up a Repositories.  
 You need to create an account on developer RedHat
@@ -149,7 +182,7 @@ enabled=1
 
 #############################################################################################
 
-Topic: Processes
+Topic 7: Processes
 
 Description: A program is a set of instructions. A program in execution is a process.
 You start processes by executing a program (double click, issue command via CLI, etc)
@@ -170,7 +203,7 @@ top               (used to monitor processes)
 
 #############################################################################################
 
-Topic: Disk Partitioning & Swap Space Management
+Topic 8: Disk Partitioning & Swap Space Management
 
 Description: Disk partition are sections of storage you can put a file system on for storing files.
 Swap is like temporary storage it's not permanent
@@ -208,7 +241,7 @@ fdisk /dev/sdb1   use d then w
 
 #############################################################################################
 
-Topic: SSH configure
+Topic 9: SSH Configure
 
 Description: By default RHEL9 doesn't have ssh enabled for root user so you have to configure a setting.
 
@@ -224,7 +257,7 @@ systemctl restart sshd
 #############################################################################################
 
 
-Topic: LVM creation
+Topic 10: LVM creation
 
 Decription: LVM let's you use multiple partions across different disks.  If one disk has 1TB and you can create a logical volume to use that disk and others.
 In short this unifies all your storage so you can have a large storage pool from which to draw from.
@@ -259,7 +292,7 @@ pvremove /dev/sdb1
 
 #############################################################################################
 
-Topic: Stratis
+Topic 11: Stratis
 
 Decrpition: 
 Features: Thin provisioning, monitoring, file system snapshots, tiering, pool-based management, monitoring
@@ -320,7 +353,7 @@ lsblk
 
 #############################################################################################
 
-Topic: SElinux
+Topic 12: SElinux
 
 Description: a mandaory access control system for linux.
 Relies on labels and contexts which are like policies i.e. rules for access
@@ -352,9 +385,13 @@ vim /etc/httpd/conf/httpd.conf
 systemctl restart httpd 
 curl localhost/index.html
 
+
+dnf install setroubleshoot -y
+sealert -a /var/log/audit/audit.log
+
 #############################################################################################
 
-Topic: Virtual Data Optimizer
+Topic 13: Virtual Data Optimizer (VDO)
 
 Descrpition: a storage tool that does not duplicate data and it compresses data.  
 Also VDO uses thin provisioning i.e. it only provisions what's needed
@@ -385,7 +422,7 @@ wipefs -a /dev/sdc
 
 #############################################################################################
 
-Topic: Network configuration
+Topic 14: Network configuration
 
 Description: Basically you have to set up a hostname, ip address, netmask, gateway, and dns.  
 use nmcli or nmtui for this.  nmtui is much easier as you don't have to memorize nmcli Commands
@@ -396,12 +433,13 @@ hostnamectl set-hostname <name>
 hostname    (check if it's right)
 nmtui
 
+nmcli general hostname SOME_NAME  (another way to set the hostname)
 
 
 
 #############################################################################################
 
-Topic: Podman
+Topic 15: Podman
 
 Description: Basically this a copy of docker with the biggest difference being Podman is daemonless.
 Daemonless meaning it doesn't have a central running daemon that if compromised would jeopardize 
@@ -434,6 +472,7 @@ systemctl start --now web5-container
 systemctl status web5-container
 
 (running a service in a container on a user i.e. not the root. login to a user)
+ssh user@localhost 
 podman ps
 podman run -d --name new -p 8083:80 <image> 
 mkdir -p ~/.config/systemd/user
@@ -442,6 +481,114 @@ vim ~/.config/systemd/user/new-container.service
 (at the bottom should say WantedBy=default.service)
 systemctl --user daemon-reload
 systemctl --user start --now new-container
+
+
+#############################################################################################
+
+
+Topic 16: Yum
+
+Description: Yum is a tool to install packages.  You can also use dnf which is a more powerful version.
+
+Commands:
+
+yum list <name>
+yum search <name>
+yum info <name>
+yum install <name>
+yum update <name>
+yum remove <name>
+
+
+#############################################################################################
+
+Topic 17: Bash Scripting
+
+Description: Bash is a programming language and we use this tool to make scripts to help automate.
+There is a ton to learning how to program and you only get good at it after lots of practice.
+Below is just a few things that will help fill in some of the syntax.  
+Learn the syntax and then combine that with linux commands is the general idea.
+
+Every script starts with:
+#!  (this is called a shebang)
+Next you put in the interpreter i.e. the shell.
+#!/bin/bash   (this let's you use bash shell)
+
+Variables are like boxes that hold data.  Here's how you write them in bash.
+name="Bash"
+To call the variable you can do something like this:
+echo "Hey there, $name"   (this will print out as "Hey there, Bash")
+
+You can get inputs from the user for variables doing either Interactive or Command-Line input.
+Command-line might look like this:
+read -p "enter a file name: " file
+When you run the script it will print this out and when you type in the file name it stores it in the variable file
+Interactive would look like this:
+if [ "$#" -ne 2 ]; then
+   echo "Usage: $0 /path/to/source /path/to/backups
+   exit 1
+fi
+
+Conditional statements are basically true/false statements. You use if, elif, and else.  You always close with fi
+
+Loops are for when you want to automate repetitive tasks.  Here you use for, while, until.  Here you close with done.
+for i in {1..5}; do
+   echo "Number: $i"
+done 
+
+Functions are just code bundled together that you can call up.  Usually it's a command to do something. These are like variables but just more complex.
+greet() {
+   echo "Hello, $1!"
+}
+greet "World"
+
+Debugging scripts is simple.  Use set -x to go line by line until something fails.
+
+
+
+#############################################################################################
+
+
+Topic 18: AutoFS (Network File System)
+
+Decription: Allows a client computer to connect to a server and get files.
+Also if a shared folder is set up on the server files in there will show up on the client computers automatically as soon as they connect.
+NFS isn't permaneently connected which saves on bandwidth
+Automounter is configured on the clients machine
+NFS shares are available to all users (with permission)
+
+Commands:
+
+(server)
+dnf install nfs* -yes
+mkdir /share
+touch /share/f1 /share/f2
+vim /share/f1
+chmod 777 /share
+vim /etc/exports  (/share <client ip>I(ro,synch))
+exportfs -avr
+firewall-cmd --add-service={nfs,mountd,rpc-bind} --permanent
+firewall-cmd --reload
+
+client computer
+dnf install nfs-utils autofs -y
+showmount -e <server ip>
+vim /etc/auto.master
+   /auto_mount  /etc/auto.misc
+vim /etc/auto.misc
+   access   -rw,soft,intr  <ip of server>:/share
+
+systemctl enable --now autofs
+
+
+
+
+
+
+#############################################################################################
+
+
+
 
 
 #############################################################################################
