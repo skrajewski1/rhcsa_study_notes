@@ -193,6 +193,9 @@ baseurl=<ip given to you on test>
 gpgcheck=0
 enabled=1
 
+dnf repolist -v   (shows you the enabled software repos and shows detailed inforamtion about them)
+
+
 yum repolist | grep my_repo.repo     (check to make sure it's being picked up)
 
 #############################################################################################
