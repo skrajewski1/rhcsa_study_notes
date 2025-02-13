@@ -99,7 +99,7 @@ systemctl start --now <service>    (this starts and enables at same time)
 
 #############################################################################################
 
-Topic 4: Users and Groups
+Topic 4: Users and Groups Management
 
 Define: it's what it sounds like
 
@@ -111,6 +111,7 @@ useradd -s /bin/nologin bob   (bob can't login)
 userdel cathy
 passwd sean
 chage -E YYYY-MM-DD username   (passwd expiration date)
+chage -E $(date -d +30days +%Y-$m-%d) sean    (this will expire my password in 30 days.  Look in man page for this, don't need to memorize)
 useradd -u 1050 -g developers -G docker,jenkins -e 2025-12-31 devops1
 echo "RedHat123" | passwd --stdin devops1
 chage -d 0 devops1
@@ -148,6 +149,8 @@ cat /home/devops/.ssh/id_rsa.pub | sudo tee /home/devops/.ssh/authorized_keys
 #adds user to sudoers list so they can use sudo command
 usermod -aG wheel <username>
 
+setfacl -R -m d:u:davis:rwx /home/john   (allows only davis to have full access to john's home folder and files/directories new and future)
+
 
 #############################################################################################
 
@@ -160,6 +163,12 @@ Commands:
 chmod g+s <file/directory>  (allows all future files and directories to have the same owner)
 chmod +t <file/dir>     (prevents others from deleting files not owned by them)
 mkdir -p main/{d1,d2,d3}
+
+gzip -k <files> 
+tar -cvjf <backup name> <file>    (just remember -f has to be last!  use this for bzip2)
+tar -cvzf <backupname>  <file>      (use for tgz)
+
+
 
 
 #############################################################################################
@@ -176,10 +185,14 @@ subscription-manager register --username <name> --password <password>
 
 cd /etc/yum.repos.d/local.repo     (you can name it whatever but it has to be .repo at the end)
 Inside the file you need to write...
+
+[BaseOS]
 name=baseOS
 baseurl=<ip given to you on test>
 gpgcheck=0
 enabled=1
+
+yum repolist | grep my_repo.repo     (check to make sure it's being picked up)
 
 #############################################################################################
 
@@ -283,6 +296,13 @@ mount -a
 df -h  (to check)
 
 
+lvresize -L 300M -r /dev/myvgo/vo   (resize lv and filesystem, for xfs you can only increase!!!)
+
+umount /dev/myvgo/v0  (unmount before labeling)
+xfs_admin -L "myFS" /dev/myvgo/v0
+mount /dev/myvgo/v0
+
+
 To remove
 umount /mnt/v0
 rm -rf /mnt/v0
@@ -380,7 +400,7 @@ cat /var/www/html/index.html
 curl localhost/index.html
 semanage fcontext -a -t httpd_sys_context_t "/text(.*)?"
 restorecon -Rv /test
-ls -lZ /test     (should show the context were adjusted)
+ls -lZ /test     (should show the context we're adjusted)
 vim /etc/httpd/conf/httpd.conf
      (edit the document root to /test)
 systemctl restart httpd 
@@ -420,6 +440,11 @@ vdo stop --name=vdo1
 vdo remove --name=vdo1
 wipefs -a /dev/sdc
 (remove the line from fstab)
+
+
+Toubleshooting
+Sometimes you may need to dnf update kernel because the kernel is matching with the package.
+make sure the partition is clean i.e. wipefs -a /dev/<partition>
 
 #############################################################################################
 
@@ -588,6 +613,39 @@ journalctl -xe | grep autofs
 
 
 #############################################################################################
+
+Topic 20: Default System Level
+
+Description: These are runlevels.  They let you change how you interact with the system.  poweroff.target for example would shut down the system.
+multi-user.target is typically the default.  after you change the setting you must reboot for the changes to take affect.
+
+systemctl get-default
+sudo systemctl set-default graphical.target
+systemctl get-default
+reboot
+
+systemctl list-units --type=target
+
+
+#############################################################################################
+
+
+
+
+
+#############################################################################################
+
+
+
+
+#############################################################################################
+
+
+
+
+
+#############################################################################################
+
 
 
 
