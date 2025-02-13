@@ -1,0 +1,97 @@
+Difficulty (9/10): 
+Write a find command that accomplishes the following tasks:
+
+Search in the /var/log directory
+Find all files (not directories) that end with .log
+Only include files larger than 1 megabyte
+Only search files modified in the last 7 days
+For each file found, compress it using gzip and move the compressed file to /backup/logs
+Suppress any error messages
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Answer:
+
+find /var/log -type f -name "*.log" -size +1M -mtime -7 -exec sh -c 'gzip "$1" && mv "$1.gz" /backup/logs' _ {} \; 2>/dev/null
+
+Explanation:
+find /var/log: Search in the /var/log directory.
+-type f: Only find files, not directories.
+-name "*.log": Find files ending with .log.
+-size +1M: Only include files larger than 1 megabyte.
+-mtime -7: Only include files modified in the last 7 days.
+-exec sh -c 'gzip "$1" && mv "$1.gz" /backup/logs' _ {}: For each file found:
+Compress the file using gzip.
+Move the compressed file (.gz) to /backup/logs.
+$1 is the placeholder for the found file.
+2>/dev/null: Suppress any error messages by redirecting them to /dev/null.

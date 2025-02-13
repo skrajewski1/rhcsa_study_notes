@@ -38,7 +38,7 @@ Topics Covered
 Study Resources:
 
 RHCSA Exam Objectives: https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam?section=objectives
-RHCSA Practice Questions by billybennett  https://github.com/chlebik/rhcsa-practice-questions/blob/master/README.md
+RHCSA Practice Questions by chlebik  https://github.com/chlebik/rhcsa-practice-questions/blob/master/README.md
 Het Tanis https://www.youtube.com/@het_tanis8213/streams
 Dex Tutor (old) https://www.youtube.com/watch?v=TmrS7FhaaRA&list=PLlr7wO747mNrUoTuXhZ0REJw3hL4oWvLm
 Dex Tutor (new) https://www.youtube.com/watch?v=UQuCZWJW7bY&list=PLlr7wO747mNr3DQnprOi51GtsB39pCV7k
@@ -630,8 +630,14 @@ systemctl list-units --type=target
 
 #############################################################################################
 
+Topic: Journald
 
+Description: It's the logging serviced used by systemd.  Important tool for troubleshooting issues.
 
+Commands:
+
+(edit file /etc/systemd/journald.conf  and change Storage=auto to Storage=persistent)
+systemctl restart systemd-journald.service
 
 
 #############################################################################################
