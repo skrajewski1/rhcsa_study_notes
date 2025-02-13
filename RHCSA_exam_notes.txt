@@ -5,10 +5,13 @@ Author: Sean Krajewski
 ##### Note to Reader #####
 
 I created this text file so that I would have a place to keep my notes for future studying as I got tired of writing notes by hand.
-This is meant for the RHCSA (Exam EX200) offered by RedHat.
-It is free to use by others if you need something quick to review.
-Scroll through the text file or use Ctrl-F to search for terms.
+This is meant for the RHCSA (Exam EX200) offered by RedHat.  It is considered an entry level exam and tests your skills on Red Hat systems.
+A passing grade is 70% or 210 of 300 points.
+Given the trends toward microservices and cloud infrastructure it would be best to know containerization tools really well to supplement linux skills.
+This resource is free to use by others if you need something quick to review.
+Scroll through the text file or use Ctrl-F to search for terms and commands.
 Not meant to be 100% thorough.
+See resources used below.
 
 Topics Covered
 1. Tuned
@@ -19,7 +22,7 @@ Topics Covered
 6. Configuring Repos
 7. Processes
 8. Partitioning & Swap Space Management
-9. SSH Configuration
+9. SSH Configuration (root login)
 10. LVM creation
 11. Stratis
 12. SElinux 
@@ -29,20 +32,18 @@ Topics Covered
 16. Yum
 17. Bash Scripting
 18. Autofs & NFS
+19.Default System Level
 
 
 Study Resources:
 
+RHCSA Exam Objectives: https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam?section=objectives
 RHCSA Practice Questions by billybennett  https://github.com/chlebik/rhcsa-practice-questions/blob/master/README.md
 Het Tanis https://www.youtube.com/@het_tanis8213/streams
 Dex Tutor (old) https://www.youtube.com/watch?v=TmrS7FhaaRA&list=PLlr7wO747mNrUoTuXhZ0REJw3hL4oWvLm
 Dex Tutor (new) https://www.youtube.com/watch?v=UQuCZWJW7bY&list=PLlr7wO747mNr3DQnprOi51GtsB39pCV7k
-Learn Linux TV (bash)  https://www.youtube.com/playlist?list=PLT98CRl2KxKGj-VKtApD8-zCqSaN2mD4w
+Learn Linux TV (for bash)  https://www.youtube.com/playlist?list=PLT98CRl2KxKGj-VKtApD8-zCqSaN2mD4w
 RHCSA 8th Edition Michael Jan and Alessandro Orsaria
-
-
-
-
 
 
 #############################################################################################
@@ -614,7 +615,7 @@ journalctl -xe | grep autofs
 
 #############################################################################################
 
-Topic 20: Default System Level
+Topic 19: Default System Level
 
 Description: These are runlevels.  They let you change how you interact with the system.  poweroff.target for example would shut down the system.
 multi-user.target is typically the default.  after you change the setting you must reboot for the changes to take affect.
