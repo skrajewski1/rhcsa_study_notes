@@ -630,7 +630,7 @@ systemctl list-units --type=target
 
 #############################################################################################
 
-Topic: Journald
+Topic 20: Journald
 
 Description: It's the logging serviced used by systemd.  Important tool for troubleshooting issues.
 
@@ -642,7 +642,18 @@ systemctl restart systemd-journald.service
 
 #############################################################################################
 
+Topic 21: Grep and Find
 
+Description: Grep is used to search inside a file.  Find is used to find files or directories.  
+You can combine both to use as a search bar of sorts to find things on the system.
+It always helps if you know what you are searching for!
+Note you can make symlinks for commonly accessesed files and use that as a short cut.  i.e. find your conf and log file and symlink it to your home dir for easy access.
+
+Command:
+
+
+find /etc -type f -maxdepth 1 -mtime +180 -exec cp {} /var/tmp/pvt \;  (finds files that are over 180days old and copies them to /var/tmp/pvt)
+grep -lis chrony /etc/*   (searches files in /etc/ for the word chrony, you can put it in quotes also.)
 
 
 #############################################################################################
