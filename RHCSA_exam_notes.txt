@@ -36,6 +36,7 @@ Topics Covered
 20. Journald
 21. Grep and Find
 22. System Bootloader
+23. SSH Keys
 
 
 Study Resources:
@@ -693,12 +694,23 @@ Topic 22: System Bootloader
 
 Description: This is managed by the GRUB 2 bootloader on RHEL9.
 
+Commands:
+
 
 
 #############################################################################################
 
+Topic 23: SSH Keygen (Authentication)
 
+Description:  Secure shell key generation allows you to make special login keys so that only you can login and nobody else.
+Saves you from giving out passwords when you can just make a key and if you need to you can shut off the SSH service if necessary.
 
+Commands:
+
+ssh-keygen   (use as root user, this is basic way of doing it)
+ssh-keygen -t rsa -b 4096    (same command but this time its rsa encryption at 4096 bit length)
+
+ssh-copy-id root@<server_ip>
 
 
 
