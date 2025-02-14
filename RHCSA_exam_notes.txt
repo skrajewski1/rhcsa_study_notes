@@ -400,6 +400,7 @@ Relies on labels and contexts which are like policies i.e. rules for access
 Commands:
 
 SElinux Modes
+sestatus  (check selinux status)
 getenforce
 setenforce 0   (set's selinux to permissive)
 vim /etc/sysconfig/selinux   (write in there selinux disabled)
@@ -408,6 +409,8 @@ reboot to make changes permanent
 SElinux Booleans
 getsebool -a | grep "httpd"
 setsebool -P httpd_enable_homedirs on
+setsebool -P httpd_can_network_connect_db on    (allows you to connect to the http server remote database, -P makes it persistent across reboots)
+
 
 SElinux Port 
 semanage port -a -t http_port_t -p tcp 82
@@ -427,6 +430,9 @@ curl localhost/index.html
 
 dnf install setroubleshoot -y
 sealert -a /var/log/audit/audit.log
+
+ausearch -m avc -ts recent | grep nginx  (check if selinux is blocking nginx)
+
 
 #############################################################################################
 
