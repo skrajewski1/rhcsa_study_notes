@@ -33,6 +33,9 @@ Topics Covered
 17. Bash Scripting
 18. Autofs & NFS
 19.Default System Level
+20. Journald
+21. Grep and Find
+22. System Bootloader
 
 
 Study Resources:
@@ -76,6 +79,7 @@ Possibly security and compliance issues if not set up correctly
 Commands:
 
 dnf install chrony
+systemctl start --now chronyd
 vim /etc/chrony.conf   (server <ip> iburst)
 systemctl restart chronyd
 chronyc sources -c
@@ -83,12 +87,16 @@ chronyc sources -v
 timedatectl set-ntp true
 timedatectl set-ntp false
 
+chronyc makestep  # (Optional for immediate sync)
+
 #############################################################################################
 
 Topic 3: Systemctl
 
 Define: utility helps you start, restart, stop, disable services that you download or that on the system already.
 stands for system control
+each service uses a daemon i.e. a background process that starts at boot.  They end with a "d" typically.
+you have to be the root user or sudo permissions to use this command.
 
 Commands:
 systemctl status <service>
@@ -97,6 +105,11 @@ systemctl stop
 systemctl enable 
 systemctl disable
 systemctl start --now <service>    (this starts and enables at same time)
+
+systemctl is-active sshd
+systemctl is-enabled sshd
+
+systemctl list-units   (lists all active systemd units i.e. services, sockets, mounts)
 
 #############################################################################################
 
@@ -512,6 +525,13 @@ vim ~/.config/systemd/user/new-container.service
 systemctl --user daemon-reload
 systemctl --user start --now new-container
 
+loginctl enable-linger   (this will start the service regardless if the user is logged in. i.e. it starts the service when the system boots)
+if you want it off then use loginctl disable-linger <username>
+
+DON'T FORGET
+if you are adding a web service you need to adjust the fiewall settings
+firewall-cmd --permanent --add-port=8083/tcp 
+firewall-cmd --reload
 
 #############################################################################################
 
@@ -631,6 +651,14 @@ reboot
 systemctl list-units --type=target
 
 
+If you have to set the default kernel you can do that by the following
+
+dnf install efibootmgr -y    (tool you may have to install)
+grubby --info=ALL | grep kernel
+grubby --set-default /boot<rest of kernel info>
+grubby --get-default
+
+
 #############################################################################################
 
 Topic 20: Journald
@@ -661,7 +689,9 @@ grep -lis chrony /etc/*   (searches files in /etc/ for the word chrony, you can 
 
 #############################################################################################
 
+Topic 22: System Bootloader
 
+Description: This is managed by the GRUB 2 bootloader on RHEL9.
 
 
 
