@@ -182,7 +182,7 @@ gzip -k <files>
 tar -cvjf <backup name> <file>    (just remember -f has to be last!  use this for bzip2)
 tar -cvzf <backupname>  <file>      (use for tgz)
 
-
+echo "umask 027" >> /etc/profile   (sets default permission to 640 for new files)
 
 
 #############################################################################################
