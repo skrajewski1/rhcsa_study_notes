@@ -514,12 +514,15 @@ podman rm <container name>
 podman rmi <image name>
 podman run run -it <image> /bin/bash             (takes you inside the container you just created)
 podman run -d --name web4 -p 8081:80 -v /web:/usr/local/apache2/htdocs:Z <image>
+podman run -d --name nginx -p 8085:80 -v volume1:/home/bob/data -v /home/bob/data:/usr/share/nginx/html:Z 976
 
 (this is for running a service in a container)
 podman generate systemd web5 > /etc/systemd/system/web5-container.service    (This is for a root user)
 systemctl daemon-reload 
-systemctl start --now web5-container
+systemctl start web5-container
+systemctl enable web5-container 
 systemctl status web5-container
+loginctl enable-linger <username>
 
 (running a service in a container on a user i.e. not the root. login to a user)
 ssh user@localhost 
@@ -531,6 +534,7 @@ vim ~/.config/systemd/user/new-container.service
 (at the bottom should say WantedBy=default.service)
 systemctl --user daemon-reload
 systemctl --user start --now new-container
+loginctl enable-linger <username>
 
 loginctl enable-linger   (this will start the service regardless if the user is logged in. i.e. it starts the service when the system boots)
 if you want it off then use loginctl disable-linger <username>
