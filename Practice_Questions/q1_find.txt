@@ -8,6 +8,8 @@ Only search files modified in the last 7 days
 For each file found, compress it using gzip and move the compressed file to /backup/logs
 Suppress any error messages
 
+(scroll to bottom to see answer)
+
 
 
 
