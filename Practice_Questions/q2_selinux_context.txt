@@ -1,0 +1,107 @@
+Difficulty (3/10): 
+You have a web server running on RHEL 9 with SELinux enabled. 
+After placing your website files in /srv/myweb, you notice that NGINX cannot serve the content. 
+The error log shows permission denied errors.
+
+
+Task:
+Identify the current SELinux context of /srv/myweb.
+Apply the correct SELinux context so NGINX can serve files from this directory.
+Verify the changes are persistent.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#create the directory if it hasn't been made already.
+mkdir -p /srv/myweb
+
+#this will show that the context is wrong for myweb
+ls -lZ /srv
+
+#apply new context
+semanage fcontext -at httpd_sys_content_t "/srv(.*)?"
+restorecon -Rv /srv
+
+#check the context, it will be changed
+ls -lZ /srv
+
+#restart httpd to ensure the web server picks up the new configuration
+systemctl restart httpd
+
+#reboot to check
+reboot
