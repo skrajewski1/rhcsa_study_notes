@@ -232,6 +232,7 @@ fg % <job#>
 kill <pid>
 killall <command>
 top               (used to monitor processes)
+pgrep <process name>     (to see the process id)
 
 #############################################################################################
 
