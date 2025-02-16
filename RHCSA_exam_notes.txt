@@ -49,6 +49,11 @@ Dex Tutor (new) https://www.youtube.com/watch?v=UQuCZWJW7bY&list=PLlr7wO747mNr3D
 Learn Linux TV (for bash)  https://www.youtube.com/playlist?list=PLT98CRl2KxKGj-VKtApD8-zCqSaN2mD4w
 RHCSA 8th Edition Michael Jan and Alessandro Orsaria
 
+Taking the Exam
+Here's how to prepare for taking the exam remotely.
+https://learn.redhat.com/t5/Certification-Resources/Getting-Ready-for-your-Red-Hat-Certification-Remote-Exam/ba-p/33528
+
+
 
 #############################################################################################
 
