@@ -95,6 +95,12 @@ timedatectl set-ntp false
 
 chronyc makestep  # (Optional for immediate sync)
 
+timedatectl list-timezones
+timedatectl set-timezone 
+timedatectl set-time
+tzselect    (just selects timezone)
+
+
 #############################################################################################
 
 Topic 3: Systemctl
