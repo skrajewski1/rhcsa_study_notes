@@ -750,7 +750,8 @@ Commands:
 rpm -qa > /root/pkgs.txt
 rpm -qa | wc -L
 rpm -qf /etc/sestatus.conf
-rpm -qi zlib
+rpm -qi zlib    (shows package information)
+rpm -ql zlib    (list files provided by the package)
 
 #############################################################################################
 
