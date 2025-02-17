@@ -710,6 +710,9 @@ find /etc -type f -maxdepth 1 -mtime +180 -exec cp {} /var/tmp/pvt \;  (finds fi
 grep -lis chrony /etc/*   (searches files in /etc/ for the word chrony, you can put it in quotes also.)
 
 
+find /etc -name '*.conf' > ~/filelist.txt          (finds all files ending with .conf and put them in filelist.txt)
+grep "security" filelist.txt  | wc -l              (this will filter for security and list the number of times it occures)
+
 #############################################################################################
 
 Topic 22: System Bootloader
@@ -733,6 +736,26 @@ ssh-keygen   (use as root user, this is basic way of doing it)
 ssh-keygen -t rsa -b 4096    (same command but this time its rsa encryption at 4096 bit length)
 
 ssh-copy-id root@<server_ip>
+
+
+
+#############################################################################################
+
+Topic 24: RPM
+
+Description: RPM is a package manager.
+
+Commands:
+
+rpm -qa > /root/pkgs.txt
+rpm -qa | wc -L
+rpm -qf /etc/sestatus.conf
+rpm -qi zlib
+
+#############################################################################################
+
+
+
 
 
 
