@@ -6,11 +6,11 @@ Author: Sean Krajewski
 
 I created this text file so that I would have a place to keep my notes for future studying as I got tired of writing notes by hand.
 This is meant for the RHCSA (Exam EX200) offered by RedHat.  It is considered an entry level exam and tests your skills on Red Hat systems.
-A passing grade is 70% or 210 of 300 points.
+A passing grade is 70% or 210 of 300 points.  This is an introductory to the Red Hat certs.
 Given the trends toward microservices and cloud infrastructure it would be best to know containerization tools really well to supplement linux skills.
 This resource is free to use by others if you need something quick to review.
 Scroll through the text file or use Ctrl-F to search for terms and commands.
-Not meant to be 100% thorough.
+Not meant to be 100% thorough.  I have resources I used to study for the exam below.  Dex and Jang are the best in my opinion.
 See resources used below.
 
 Topics Covered
@@ -37,9 +37,13 @@ Topics Covered
 21. Grep and Find
 22. System Bootloader
 23. SSH Keys
+24. RPM
+25. Crontab (Cron Jobs)
 
 
 Study Resources:
+I recommend starting with Dex and then get Jang's book and do that.  If you can pull out a piece of paper and do the questions from memory from Dex's videos you're
+probably ready for the exam.  If you still not sure open up a random question from the labs in Jang's book.  If you can do those with little difficulty yor definitely ready.
 
 RHCSA Exam Objectives: https://www.redhat.com/en/services/training/ex200-red-hat-certified-system-administrator-rhcsa-exam?section=objectives
 RHCSA Practice Questions by chlebik  https://github.com/chlebik/rhcsa-practice-questions/blob/master/README.md
@@ -48,9 +52,13 @@ Dex Tutor (old) https://www.youtube.com/watch?v=TmrS7FhaaRA&list=PLlr7wO747mNrUo
 Dex Tutor (new) https://www.youtube.com/watch?v=UQuCZWJW7bY&list=PLlr7wO747mNr3DQnprOi51GtsB39pCV7k
 Learn Linux TV (for bash)  https://www.youtube.com/playlist?list=PLT98CRl2KxKGj-VKtApD8-zCqSaN2mD4w
 RHCSA 8th Edition Michael Jan and Alessandro Orsaria
+Jang M. RHCSA (really good!)
 
 Taking the Exam
-Here's how to prepare for taking the exam remotely.
+Here's how to prepare for taking the exam remotely.  There is only like 14 places to take the exam in person so you'll probably have to do remote.
+Remember to go on Red Hat's website, buy the voucher/exam and then wait for the confirmation email.  Next login and schedule for remote exam.
+Make sure you have already set up your computer/desk prior to scheduling the exam so you know you're good.
+
 https://learn.redhat.com/t5/Certification-Resources/Getting-Ready-for-your-Red-Hat-Certification-Remote-Exam/ba-p/33528
 
 
@@ -415,7 +423,9 @@ SElinux Modes
 sestatus  (check selinux status)
 getenforce
 setenforce 0   (set's selinux to permissive)
-vim /etc/sysconfig/selinux   (write in there selinux disabled)
+
+vim /etc/sysconfig/selinux   (symlink to original file; write in there selinux disabled)
+or use /etc/sysconfig/selinux  (this is the original file)
 reboot to make changes permanent
 
 SElinux Booleans
@@ -444,7 +454,7 @@ dnf install setroubleshoot -y
 sealert -a /var/log/audit/audit.log
 
 ausearch -m avc -ts recent | grep nginx  (check if selinux is blocking nginx)
-
+sestatus
 
 #############################################################################################
 
@@ -555,6 +565,9 @@ DON'T FORGET
 if you are adding a web service you need to adjust the fiewall settings
 firewall-cmd --permanent --add-port=8083/tcp 
 firewall-cmd --reload
+
+firewall-cmd --get-default-zone
+firewall-cmd --set-default-zone
 
 #############################################################################################
 
@@ -705,7 +718,7 @@ Note you can make symlinks for commonly accessesed files and use that as a short
 
 Command:
 
-
+find / -user harry -type f -exec cp -rvp {} /opt/dir \;
 find /etc -type f -maxdepth 1 -mtime +180 -exec cp {} /var/tmp/pvt \;  (finds files that are over 180days old and copies them to /var/tmp/pvt)
 grep -lis chrony /etc/*   (searches files in /etc/ for the word chrony, you can put it in quotes also.)
 
@@ -720,7 +733,10 @@ Topic 22: System Bootloader
 Description: This is managed by the GRUB 2 bootloader on RHEL9.
 
 Commands:
-
+systemctl get-default
+systemctl set-default multi-user.target
+systemctl isolate multi-user.target    (apply changes immediately withou reboot)
+systemctl list-units --type=target
 
 
 #############################################################################################
@@ -756,7 +772,16 @@ rpm -ql zlib    (list files provided by the package)
 #############################################################################################
 
 
+Topic 25. Crontab (Cron Jobs)
 
+Description:  Lets you run commands/scripts at a scheduled time
+
+Commands:
+
+crontab -e   (edit crontab file)
+grep CRON /var/log/cron             (verify it works)
+
+crontab -l   (list the jobs scheduled)
 
 
 
