@@ -186,6 +186,10 @@ usermod -aG wheel <username>
 setfacl -R -m d:u:davis:rwx /home/john   (allows only davis to have full access to john's home folder and files/directories new and future)
 
 
+ vim /etc/security/pwquality.conf
+ vim /etc/default/useradd
+ vim /etc/login.defs
+
 #############################################################################################
 
 Topic 5: File Management
@@ -725,6 +729,7 @@ grep -lis chrony /etc/*   (searches files in /etc/ for the word chrony, you can 
 
 find /etc -name '*.conf' > ~/filelist.txt          (finds all files ending with .conf and put them in filelist.txt)
 grep "security" filelist.txt  | wc -l              (this will filter for security and list the number of times it occures)
+grep -n "abcde" /etc/testfile                      (will list the line number of where abcde was found)
 
 #############################################################################################
 
