@@ -573,6 +573,10 @@ firewall-cmd --reload
 firewall-cmd --get-default-zone
 firewall-cmd --set-default-zone
 
+
+(start a container for mariadb and make it automatically start at system boot)
+podman run -d --name mariadb -p 3306:3306 -v /var/mariadb-container:/var/lib/mysql -e MARIADB_ROOT_PASSWORD=my-secret-pw --restart unless-stopped mariadb:latest
+
 #############################################################################################
 
 
@@ -788,6 +792,10 @@ grep CRON /var/log/cron             (verify it works)
 
 crontab -l   (list the jobs scheduled)
 
+
+30 2 * * * /opt/scripts/backup.sh > /var/log/backup.log 2>&1
+15 4 * * 1 rm -rf /tmp/* > /var/log/tmp_cleanup.log 2>&1
+45 23 31 * * [ "$(date +\%d -d tomorrow)" == "01" ] /opt/scripts/db_backup.sh > /var/log/db_backup.log 2>&1
 
 
 #############################################################################################
