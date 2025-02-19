@@ -561,11 +561,13 @@ ssh user@localhost
 podman ps
 podman run -d --name new -p 8083:80 <image> 
 mkdir -p ~/.config/systemd/user
-podman generate systemd new > ~/.config/systemd/user/new-container.service
+cd ~/.config/systemd/user 
+podman generate systemd --name new-container.service --files --new
 vim ~/.config/systemd/user/new-container.service
 (at the bottom should say WantedBy=default.service)
 systemctl --user daemon-reload
-systemctl --user start --now new-container
+systemctl --user start new-container
+systemctl --user enable new-container
 loginctl enable-linger <username>
 
 loginctl enable-linger   (this will start the service regardless if the user is logged in. i.e. it starts the service when the system boots)
@@ -809,6 +811,8 @@ crontab -l   (list the jobs scheduled)
 
 
 Random thoughts
+
+know how to login to podman
 
 container-ascii2pdf
 /opt/files 
