@@ -190,6 +190,12 @@ setfacl -R -m d:u:davis:rwx /home/john   (allows only davis to have full access 
  vim /etc/default/useradd
  vim /etc/login.defs
 
+ 
+ [setting default permissions for a user]
+ echo "umask 0444" >> /home/sean/.bashrc    (sets new files created by sean have read only for everyone)
+
+
+
 #############################################################################################
 
 Topic 5: File Management
@@ -479,7 +485,7 @@ vdo list
 mkfs.xfs -K /dev/mapper/vdo1
 mkdir -p /mnt/vdo1
 vim /etc/fstab
-     /dev/mapper/vdo1 /vdo1 auto defaults,x-systemd.requires=vdo.service 0 0
+     /dev/mapper/vdo1 /vdo1 xfs defaults,x-systemd.requires=vdo.service 0 0
 mount -a
 
 
@@ -688,7 +694,7 @@ Description: These are runlevels.  They let you change how you interact with the
 multi-user.target is typically the default.  after you change the setting you must reboot for the changes to take affect.
 
 systemctl get-default
-sudo systemctl set-default graphical.target
+systemctl set-default graphical.target
 systemctl get-default
 reboot
 
@@ -799,3 +805,32 @@ crontab -l   (list the jobs scheduled)
 
 
 #############################################################################################
+
+
+
+Random thoughts
+
+container-ascii2pdf
+/opt/files 
+/opt/process
+container was using monitor image
+podman login <link>
+   enter username and pw
+
+set up NTP server with link as only thing given  (easy question)
+
+find user files  find / -user julia -type f -exec cp -rvp {} /root/findfile/ \; 2> /dev/null
+set default permission for a user
+
+stratis 
+LVM
+resize LVM
+shared directory
+selinux Debug
+root  reset passwd
+setting up repo was on there BaseOS and AppStream  (yum repolist to check, should see stuff show up)
+
+
+there was no bash on the exam
+
+
